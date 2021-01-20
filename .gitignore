@@ -24,3 +24,6 @@ yarn-error.log*
 
 # Project exclude paths
 /dist/
+
+.idea
+__generated__
