@@ -5,7 +5,7 @@ import Navbar from "./components/Navbar";
 import ServerList from "./pages/ServerList";
 
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
-import {CircularProgress, IconButton, Toolbar} from "@material-ui/core";
+import {CircularProgress, Grid, IconButton, Toolbar} from "@material-ui/core";
 import NodePage from "./pages/Nodes";
 
 function App() {
@@ -16,19 +16,22 @@ function App() {
     return (
     <div className="App">
         <Router>
-            <Navbar onWorldSelect={(v) => setWorld(v)}/>
+            <Grid container direction="column" style={{height: "100vh"}}>
+                <Navbar onWorldSelect={(v) => setWorld(v)}/>
 
-            {!world ? <CircularProgress style={{marginTop: "10%" }} color="secondary"/> :
-                <Switch>
-                    <Route path="/dashboard">
-                        <ServerList/>
-                    </Route>
+                {!world ? <CircularProgress style={{marginTop: "10%" }} color="secondary"/> :
+                    <Switch>
+                        <Route path="/dashboard">
+                            <ServerList/>
+                        </Route>
 
-                    <Route path="/nodes">
-                        <NodePage/>
-                    </Route>
-                </Switch>
-            }
+                        <Route path="/nodes">
+                            <NodePage/>
+                        </Route>
+                    </Switch>
+                }
+            </Grid>
+
 
         </Router>
     </div>

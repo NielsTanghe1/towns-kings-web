@@ -2,7 +2,7 @@ import React from 'react';
 import {
     AppBar,
     Button, CircularProgress, CssBaseline, Divider,
-    Drawer,
+    Drawer, Grid,
     IconButton,
     List, ListItem, ListItemIcon, ListItemText,
     makeStyles,
@@ -25,12 +25,14 @@ const drawerWidth = 240
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
+        overflow: "hidden",
     },
     appBar: {
         transition: theme.transitions.create(['margin', 'width'], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
+        zIndex: theme.zIndex.drawer + 1,
     },
     appBarShift: {
         width: `calc(100% - ${drawerWidth}px)`,
@@ -105,15 +107,15 @@ function Navbar(props) {
     const handleDrawerClose = () => setOpenDrawer(false);
 
     return (
-        <div className={classes.root}>
+        <Grid item className={classes.root}>
             <CssBaseline/>
             <AppBar
-                position="fixed"
+                position="static"
                 className={clsx(classes.appBar, {
                     [classes.appBarShift]: openDrawer,
                 })}
             >
-                <Toolbar>
+                <Toolbar style={{height: "auto"}}>
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
@@ -185,7 +187,7 @@ function Navbar(props) {
                 })}
             >
             </main>
-        </div>
+        </Grid>
     );
 }
 
