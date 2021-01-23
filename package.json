@@ -156,5 +156,8 @@
       "jest-watch-typeahead/testname"
     ],
     "resetMocks": true
+  },
+  "devDependencies": {
+    "webpack-cli": "^4.4.0"
   }
 }

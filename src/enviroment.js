@@ -9,7 +9,7 @@ function fetchQuery(
     operation,
     variables,
 ) {
-    return fetch('http://8a7f662f6894.eu.ngrok.io/api', {
+    return fetch('/api', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
