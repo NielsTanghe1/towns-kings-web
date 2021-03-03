@@ -10,7 +10,7 @@ import NodePage from "./pages/Nodes";
 
 function App() {
 
-    const [world, setWorld] = React.useState("wereld");
+    const [world, setWorld] = React.useState(null);
 
 
     return (
@@ -19,10 +19,10 @@ function App() {
             <Grid container direction="column" style={{height: "100vh"}}>
                 <Navbar onWorldSelect={(v) => setWorld(v)}/>
 
-                {!world ? <CircularProgress style={{marginTop: "10%" }} color="secondary"/> :
+                {world == null ? <CircularProgress style={{marginTop: "10%", marginLeft: "auto", marginRight: "auto"}} color="secondary"/> :
                     <Switch>
                         <Route path="/dashboard">
-                            <ServerList/>
+                            <ServerList world={world}/>
                         </Route>
 
                         <Route path="/nodes">

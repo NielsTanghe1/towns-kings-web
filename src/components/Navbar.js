@@ -17,8 +17,10 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import {Link} from 'react-router-dom';
 import WorldIcon from '@material-ui/icons/Public';
-import Dialog from '@material-ui/core/Dialog';
 import WorldDialog from "./WorldDialog";
+
+import {graphql, QueryRenderer} from "react-relay";
+import environment from "../enviroment";
 
 const drawerWidth = 240
 
@@ -85,18 +87,10 @@ function Navbar(props) {
 
     const { onWorldSelect } = props;
 
-
-
     const classes = useStyles();
     const theme = useTheme();
     const [openDrawer, setOpenDrawer] = React.useState(false);
     const [openWorld, setOpenWorld] = React.useState(false);
-    const [worldLoading, setWorldLoading] = React.useState(true);
-
-    const worldLoad = (def) => {
-        setWorldLoading(false);
-        onWorldSelect(def);
-    }
 
     const worldClick = () => setOpenWorld(true);
 
@@ -133,19 +127,42 @@ function Navbar(props) {
                         style={{flexGrow: 1}}
                     />
 
-                    {worldLoading ? <CircularProgress className={classes.menuButton} color="secondary"/> :
-                        <IconButton
-                            color="inherit"
-                            aria-haspopup="true"
-                            onClick={worldClick}
-                            edge="start"
-                            className={classes.menuButton}
-                        >
-                            <WorldIcon/>
-                        </IconButton>
-                    }
+                    <QueryRenderer
+                        environment={environment}
+                        query={graphql`
+                            query NavbarQuery {
+                                ...WorldDialog_worldList
+                            }
+                        `}
+                        variables={{}}
+                        render={({error, props}) => {
+                            if (error) {
+                                console.error(error);
+                                return <div>Error!</div>;
+                            }
+                            if (!props) {
+                                return <CircularProgress className={classes.menuButton} color="secondary"/>;
+                            }
 
-                    <WorldDialog onLoad={worldLoad} selectedValue={"user02@gmail.com"} open={openWorld} onClose={worldClose} onSelect={onWorldSelect} />
+                            return [
+                                <WorldDialog key="dialog" open={openWorld} worldList={props} onClose={worldClose} onSelect={(v) => {
+                                    worldClose();
+                                    onWorldSelect(v);
+                                }} />,
+                                <IconButton
+                                    color="inherit"
+                                    key="worldbutton"
+                                    aria-haspopup="true"
+                                    onClick={worldClick}
+                                    edge="start"
+                                    className={classes.menuButton}
+                                >
+                                    <WorldIcon/>
+                                </IconButton>
+                            ];
+                        }}
+                    />
+
 
                 </Toolbar>
             </AppBar>

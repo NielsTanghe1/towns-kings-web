@@ -19,12 +19,8 @@ const useStyles = makeStyles({
     },
 });
 
-const rows = [
-    { name: "City1", loc: [100, 50, 100]},
-    { name: "City2", loc: [999, 50, 100]},
-];
-
-function ServerList() {
+function ServerList(props) {
+    const { world } = props;
     const classes = useStyles();
 
     return (
@@ -37,15 +33,14 @@ function ServerList() {
             }
           }
         `}
-        variables={{world: "cbb82595-6bab-4abe-bf0e-38c255bd2221"}}
+        variables={{world: world.id}}
         render={({error, props}) => {
-            if (error) {
+            if (error) { //TODO fix loading and error display
                 return <div>Error!</div>;
             }
             if (!props) {
                 return <div>Loading...</div>;
             }
-            console.info(props)
 
             return (
                 <TableContainer className={classes.table} component={Paper}>
